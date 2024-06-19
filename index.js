@@ -21,6 +21,10 @@ app.use(
     swaggerUi.setup(specs, { explorer: true })
 );
 
+app.get("/test",(req,res)=>{
+    res.send("Success");
+});
+
 // app.use('/', testRouter);
 
 // app.use('/api/members', memberRouter)
