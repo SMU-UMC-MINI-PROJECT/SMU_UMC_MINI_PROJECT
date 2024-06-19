@@ -40,18 +40,18 @@ app.use((err, req, res, next) => {
     .send(response(err.data));
 });
 
+
 const connectDB = async () => {
   try {
-    await mongoose.connect(
-      `mongodb+srv://Admin:${process.env.DB_PASSWORD}@backenddb.xna3tlg.mongodb.net/Node-API?retryWrites=true&w=majority&appName=BackendDB`
-    );
-    console.log('Connected!');
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('Connected to MongoDB!');
     app.listen(port, () => {
-      console.log(`Example app listening on port 3000`);
+      console.log(`Example app listening on port ${port}`);
     });
   } catch (error) {
-    console.log('Connection failed');
+    console.error('Connection to MongoDB failed:', error.message);
+    process.exit(1); // 연결 실패 시 프로세스 종료
   }
 };
-connectDB();
 
+connectDB();
