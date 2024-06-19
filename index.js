@@ -27,6 +27,7 @@ app.use(
   swaggerUi.setup(specs, { explorer: true })
 );
 
+
 // routes
 app.use('/api/posts', postRouter);
 
@@ -53,3 +54,4 @@ const connectDB = async () => {
   }
 };
 connectDB();
+
