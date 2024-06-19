@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04 # OS 환경
+    runs-on: ubuntu-22.04 # OS 환경
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'dev'
     # pull_request가 dev 브랜치에 merge 됐을 경우
 
