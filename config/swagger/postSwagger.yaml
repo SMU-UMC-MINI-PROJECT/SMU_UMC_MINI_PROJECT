@@ -44,6 +44,13 @@ paths:
         - Posts
       summary: 게시글 1개 조회
       description: 게시글 ID로 게시글 1개 조회하기
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          description: 조회할 게시글의 ID
+          schema:
+            type: string
       responses:
         '200':
           description: 게시글 1개 조회 성공!
@@ -86,7 +93,9 @@ paths:
           description: 수정할 게시글의 ID
           schema:
             type: string
+            example: '60d21b4667d0d8992e610c85'
       requestBody:
+        description: 게시글 수정
         required: true
         content:
           application/json:
@@ -95,10 +104,12 @@ paths:
               properties:
                 title:
                   type: string
-                  example: '수정된 게시글 제목'
+                  description: 게시글 제목
+                  example: 안녕하세요
                 content:
                   type: string
-                  example: '이것이 수정된 게시글의 내용입니다.'
+                  description: 게시글 내용
+                  example: 나는 개발자가 될거에요
       responses:
         '200':
           description: 게시글 수정 성공!
@@ -112,10 +123,10 @@ paths:
                     example: '60d21b4667d0d8992e610c85'
                   title:
                     type: string
-                    example: '수정된 게시글 제목'
+                    example: '안녕하세요'
                   content:
                     type: string
-                    example: '이것은 수정된 게시글의 내용입니다.'
+                    example: '나는 개발자가 될거에요'
                   createdAt:
                     type: string
                     format: date-time
@@ -163,10 +174,10 @@ paths:
               properties:
                 title:
                   type: string
-                  example: '새로운 게시글 제목'
+                  description: 게시글 제목
                 content:
                   type: string
-                  example: '이것이 새로운 게시글의 내용입니다.'
+                  description: 게시글 내용
       responses:
         '201':
           description: 게시글 생성 성공!
