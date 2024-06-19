@@ -1,6 +1,6 @@
 import { successStatus } from '../../config/successStatus.js';
 import { response } from '../../config/response.js';
-import { getPostData } from '../services/post.service.js';
+
 import Post from '../models/post.model.js';
 const getPosts = async (req, res, next) => {
   try {
