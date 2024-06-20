@@ -10,7 +10,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import { postRouter } from './srcs/routes/post.route.js';
 
-const app = express();
+const app = express(); 
 const port = 3000;
 
 app.set('port', process.env.PORT || 3000); // 서버 포트 지정
