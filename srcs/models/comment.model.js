@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 const CommentSchema = mongoose.Schema(
   {
     post: {
@@ -5,11 +7,11 @@ const CommentSchema = mongoose.Schema(
       ref: 'post',
       required: true,
     },
-    author: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'user',
-      required: true,
-    },
+    // author: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: 'user',
+    //   required: true,
+    // },
     // 대댓글
     parentComment: {
       type: mongoose.Schema.Types.ObjectId,
@@ -50,4 +52,4 @@ CommentSchema.virtual('childComments')
     this._childComments = value;
   });
 
-module.exports = mongoose.model('Comment', CommentSchema);
+export default mongoose.model('Comment', CommentSchema);
