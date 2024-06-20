@@ -1,12 +1,15 @@
 import mongoose from 'mongoose';
+import CommentSchema from './comment.model';
 
 const PostSchema = mongoose.Schema(
   {
-    author: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'user',
-      require: true,
-    },
+    // 유저 나중에 연결해줄 것
+    // author: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: 'user',
+    //   require: true,
+    // },
+
     title: {
       type: String,
       required: [true, '제목을 작성해주세요'],
@@ -24,5 +27,14 @@ const PostSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
+postSchema.set('toObject', { virtuals: true });
+postSchema.set('toJSON', { virtuals: true });
+
+postSchema.virtual('comments', {
+  ref: 'Comment',
+  localField: '_id',
+  foreignField: 'post',
+});
 
 export default mongoose.model('Post', PostSchema);
