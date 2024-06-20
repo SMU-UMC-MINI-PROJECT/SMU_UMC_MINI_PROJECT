@@ -19,6 +19,11 @@ const CommentSchema = mongoose.Schema(
       type: Number,
       default: 1,
     },
+    // 고아 댓글 문제 해결을 위해 논리적 삭제 구현을 위해 추가
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
     text: { type: String, required: [true, '댓글을 작성해주세요'] },
   },
   {
