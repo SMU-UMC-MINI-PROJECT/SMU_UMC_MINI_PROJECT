@@ -10,10 +10,6 @@ const PostSchema = mongoose.Schema(
       type: String,
       required: [true, '내용을 작성해주세요'],
     },
-    create_date: {
-      type: Date,
-      default: new Date(),
-    },
     image: {
       type: String,
       required: false,
