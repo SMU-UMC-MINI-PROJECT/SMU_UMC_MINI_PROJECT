@@ -1,15 +1,15 @@
 import Comment from '../models/comment.model.js';
 
-const getCommentsLogic = async (postId) => {
+const getCommentsLogic = async (post_id) => {
   try {
     const comments = await Comment.find({
-      post: postId,
+      post: post_id,
       parentComment: null,
       isDeleted: false,
     })
       .sort({ createdAt: -1 })
       .populate({
-        path: 'childComments',
+        path: 'comments',
         match: { isDeleted: false },
         options: { sort: { createdAt: -1 } },
       });
@@ -19,10 +19,10 @@ const getCommentsLogic = async (postId) => {
   }
 };
 
-const createCommentLogic = async (postId, text, parentComment = null) => {
+const createCommentLogic = async (post_id, text, parentComment = null) => {
+  console.log(post_id, text, parentComment);
   try {
     let depth = 1;
-
     if (parentComment) {
       const parent = await Comment.findById(parentComment);
       if (!parent) {
@@ -32,7 +32,7 @@ const createCommentLogic = async (postId, text, parentComment = null) => {
     }
 
     const newComment = new Comment({
-      post: postId,
+      post: post_id,
       text,
       parentComment,
       depth,
@@ -45,9 +45,9 @@ const createCommentLogic = async (postId, text, parentComment = null) => {
   }
 };
 
-const updateCommentLogic = async (postId, commentId, newText) => {
+const updateCommentLogic = async (post_id, comment_Id, newText) => {
   try {
-    const comment = await Comment.findOne({ _id: commentId, post: postId });
+    const comment = await Comment.findOne({ _id: comment_Id, post: post_id });
     if (!comment) {
       throw new Error('댓글을 찾을 수 없습니다.');
     }
@@ -60,9 +60,9 @@ const updateCommentLogic = async (postId, commentId, newText) => {
   }
 };
 
-const deleteCommentLogic = async (commentId) => {
+const deleteCommentLogic = async (post_id, comment_id) => {
   try {
-    const comment = await Comment.findOne({ _id: commentId, post: postId });
+    const comment = await Comment.findOne({ _id: comment_id, post: post_id });
     if (!comment) {
       throw new Error('댓글을 찾을 수 없습니다.');
     }
