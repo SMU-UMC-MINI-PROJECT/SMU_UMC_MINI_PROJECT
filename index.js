@@ -10,7 +10,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import { postRouter } from './srcs/routes/post.route.js';
 
-const app = express(); 
+const app = express();
 const port = 3000;
 
 app.set('port', process.env.PORT || 3000); // 서버 포트 지정
@@ -27,7 +27,6 @@ app.use(
   swaggerUi.setup(specs, { explorer: true })
 );
 
-
 // routes
 app.use('/api/posts', postRouter);
 
@@ -39,7 +38,6 @@ app.use((err, req, res, next) => {
     .status(errStatus.INTERNAL_SERVER_ERROR || err.data.status)
     .send(response(err.data));
 });
-
 
 const connectDB = async () => {
   try {
