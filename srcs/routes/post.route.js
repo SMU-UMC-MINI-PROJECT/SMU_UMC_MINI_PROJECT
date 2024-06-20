@@ -13,7 +13,7 @@ postRouter.get('/get', getPosts);
 
 postRouter.get('/get/:id', getPost);
 
-postRouter.post('/create/', createPost);
+postRouter.post('/create', createPost);
 
 postRouter.patch('/patch/:id', updatePost);
 
