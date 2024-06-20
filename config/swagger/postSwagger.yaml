@@ -106,7 +106,7 @@ paths:
               content:
                 type: string
                 description: 게시글 내용
-                example: 야호야호야호야호야호야호야호야호야호야호야호야호야호야호
+                example: 나는야 개발자가 될거애요
           responses:
           '200':
             description: 회원 가입 성공!
@@ -179,9 +179,11 @@ paths:
               title:
                 type: string
                 description: 게시글 제목
+                example: 수정할 제목이에요
               content:
                 type: string
                 description: 게시글 내용
+                example: 나는야 슈퍼 개발자가 될거에요!
       responses:
         '201':
           description: 게시글 생성 성공!
