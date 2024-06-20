@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import CommentSchema from './comment.model';
 
 const PostSchema = mongoose.Schema(
   {
@@ -28,10 +27,10 @@ const PostSchema = mongoose.Schema(
   }
 );
 
-postSchema.set('toObject', { virtuals: true });
-postSchema.set('toJSON', { virtuals: true });
+PostSchema.set('toObject', { virtuals: true });
+PostSchema.set('toJSON', { virtuals: true });
 
-postSchema.virtual('comments', {
+PostSchema.virtual('comments', {
   ref: 'Comment',
   localField: '_id',
   foreignField: 'post',
