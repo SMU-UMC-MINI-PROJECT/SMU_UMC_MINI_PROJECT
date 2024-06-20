@@ -1,5 +1,4 @@
 import { successStatus } from '../../config/successStatus.js';
-import { response } from '../../config/response.js';
 import { errStatus } from '../../config/errorStatus.js';
 
 import {
