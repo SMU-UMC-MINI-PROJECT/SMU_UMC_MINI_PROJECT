@@ -9,12 +9,12 @@ import {
 
 export const postRouter = express.Router();
 
-postRouter.get('/get', getPosts);
+postRouter.get('', getPosts);
 
-postRouter.get('/get/:id', getPost);
+postRouter.get('/:id', getPost);
 
-postRouter.post('/create', createPost);
+postRouter.post('', createPost);
 
-postRouter.patch('/patch/:id', updatePost);
+postRouter.patch('/:id', updatePost);
 
-postRouter.delete('/delete/:id', deletePost);
+postRouter.delete('/:id', deletePost);
