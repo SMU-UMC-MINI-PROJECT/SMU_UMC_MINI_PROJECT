@@ -1,5 +1,3 @@
-//index.js
-
 import express from 'express';
 import { errStatus } from './config/errorStatus.js';
 import { response } from './config/response.js';
@@ -7,47 +5,71 @@ import { specs } from './config/swagger.js';
 import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 import mongoose from 'mongoose';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import { default as setupSocketIO } from './utils/io.js';
+
+// 미들웨어 및 라우터 가져오기
 import cors from 'cors';
 import { postRouter } from './srcs/routes/post.route.js';
 import { commentRouter } from './srcs/routes/comment.route.js';
 
+// 환경 변수 로드
+dotenv.config();
+
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-app.set('port', process.env.PORT || 3000); // 서버 포트 지정
-app.use(cors()); // cors 방식 허용
-app.use(express.static('public')); // 정적 파일 접근
-app.use(express.json()); // request의 본문을 json으로 해석할 수 있도록 함 (JSON 형태의 요청 body를 파싱하기 위함)
-app.use(express.urlencoded({ extended: false })); // 단순 객체 문자열 형태로 본문 데이터 해석
-dotenv.config(); // .env 파일 사용 (환경 변수 관리)
+// 서버 포트 설정
+app.set('port', port);
 
-// swagger
+// CORS 설정
+app.use(cors());
+app.options('*', cors()); // Pre-flight CORS 설정
+
+// 정적 파일 접근
+app.use(express.static('public'));
+
+// JSON 파싱 설정
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// CORS 설정
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173'); // 클라이언트의 오리진으로 변경
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'OPTIONS, GET, POST, PUT, PATCH, DELETE'
+  );
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
+
+// Swagger 설정
 app.use(
   '/api-docs',
   swaggerUi.serve,
   swaggerUi.setup(specs, { explorer: true })
 );
 
-// routes
+// 라우트 정의
 app.use('/api/posts', postRouter);
 app.use('/api/comments', commentRouter);
 
+// 에러 핸들링
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
-  // 개발환경이면 에러를 출력하고 아니면 출력하지 않기
   res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
-  res
-    .status(errStatus.INTERNAL_SERVER_ERROR || err.data.status)
+  res.status(errStatus.INTERNAL_SERVER_ERROR || err.data.status)
     .send(response(err.data));
 });
 
+// MongoDB 연결
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI);
     console.log('Connected to MongoDB!');
-    app.listen(port, () => {
-      console.log(`Example app listening on port ${port}`);
-    });
   } catch (error) {
     console.error('Connection to MongoDB failed:', error.message);
     process.exit(1); // 연결 실패 시 프로세스 종료
@@ -55,3 +77,21 @@ const connectDB = async () => {
 };
 
 connectDB();
+
+// HTTP 서버 및 Socket.IO 서버 생성
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: 'http://localhost:5173', // 클라이언트의 실제 오리진으로 변경
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+  }
+});
+
+setupSocketIO(io);
+
+// 서버 시작
+httpServer.listen(5001, () => {
+  console.log('Server is running on port 5001');
+});
