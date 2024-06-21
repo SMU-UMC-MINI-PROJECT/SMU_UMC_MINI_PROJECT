@@ -20,7 +20,6 @@ const getCommentsLogic = async (post_id) => {
 };
 
 const createCommentLogic = async (post_id, text, parentComment = null) => {
-  console.log(post_id, text, parentComment);
   try {
     let depth = 1;
     if (parentComment) {
