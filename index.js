@@ -10,8 +10,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import { postRouter } from './srcs/routes/post.route.js';
 import { commentRouter } from './srcs/routes/comment.route.js';
-import { storage } from './srcs/controllers/image.controller.js';
-import multer from 'multer';
+import { uploadImage } from './srcs/middleware/image.uploader.js';
 
 const app = express();
 const port = 3000;
@@ -34,20 +33,26 @@ app.use(
 app.use('/api/posts', postRouter);
 app.use('/api/comments', commentRouter);
 
-const upload = multer({
-  storage: storage, // storage를 multer_s3 객체로 지정
-});
-
-const uploads = upload.fields([
-  { name: 'photo', maxCount: 1 },
-  { name: 'thumbnail', maxCount: 1 },
-]);
-
-app.post('/api/image', uploads, async (req, res) => {
-  const photo = req.files['photo'][0];
-  const thumbnail = req.files['thumbnail'][0];
-  console.log(photo);
-  console.log(photo, thumbnail);
+// image upload
+app.post('/upload', uploadImage.single('image'), (req, res) => {
+  try {
+    // 업로드가 성공적으로 완료된 경우
+    const file = req.file;
+    res.status(200).json({
+      message: 'File uploaded successfully',
+      fileInfo: {
+        originalName: file.originalname,
+        mimeType: file.mimetype,
+        size: file.size,
+        url: file.location, // S3에 업로드된 파일의 URL
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'File upload failed',
+      error: errStatus.METHOD_NOT_ALLOWED,
+    });
+  }
 });
 
 app.use((err, req, res, next) => {
