@@ -28,13 +28,15 @@ export const imageUploader = multer({
     contentType: multerS3.AUTO_CONTENT_TYPE, // Content-type, 자동으로 찾도록 설정
     key: (req, file, callback) => {
       // 파일명
-      const uploadDirectory = req.query.directory ?? ''; // 디렉토리 path 설정을 위해서
+      const uploadDirectory = req.query.directory ?? 'posts'; // 디렉토리 path 설정을 위해서
       const extension = path.extname(file.originalname); // 파일 이름 얻어오기
       const uuid = createUUID(); // UUID 생성
       // extension 확인을 위한 코드 (확장자 검사용)
       if (!allowedExtensions.includes(extension)) {
         return callback(new BaseError(errStatus.WRONG_EXTENSION));
       }
+      const fileName = `${uploadDirectory}/${uuid}_${file.originalname}`;
+      console.log('업로드 파일명:', fileName); // 디버깅 로그 추가
       callback(null, `${uploadDirectory}/${uuid}_${file.originalname}`);
     },
     acl: 'public-read-write', // 파일 액세스 권한
