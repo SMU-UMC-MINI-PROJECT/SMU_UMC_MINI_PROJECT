@@ -10,7 +10,9 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import { postRouter } from './srcs/routes/post.route.js';
 import { commentRouter } from './srcs/routes/comment.route.js';
-import { imageRouter } from './srcs/routes/image.route.js';
+import { storage } from './srcs/controllers/image.controller.js';
+import multer from 'multer';
+
 const app = express();
 const port = 3000;
 
@@ -31,7 +33,22 @@ app.use(
 // routes
 app.use('/api/posts', postRouter);
 app.use('/api/comments', commentRouter);
-app.use('/api/image', imageRouter);
+
+const upload = multer({
+  storage: storage, // storage를 multer_s3 객체로 지정
+});
+
+const uploads = upload.fields([
+  { name: 'photo', maxCount: 1 },
+  { name: 'thumbnail', maxCount: 1 },
+]);
+
+app.post('/api/image', uploads, async (req, res) => {
+  const photo = req.files['photo'][0];
+  const thumbnail = req.files['thumbnail'][0];
+  console.log(photo);
+  console.log(photo, thumbnail);
+});
 
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
