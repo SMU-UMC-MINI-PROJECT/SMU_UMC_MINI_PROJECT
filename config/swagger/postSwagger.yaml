@@ -39,6 +39,52 @@ paths:
                       example: '2023-06-19T12:34:56Z'
         '500':
           description: 서버 오류
+    post:
+      tags:
+        - Posts
+      summary: 게시글 생성
+      description: 게시글 생성하기
+      parameters:
+        - name: Posts
+          in: body
+          required: true
+          schema:
+            properties:
+              title:
+                type: string
+                description: 게시글 제목
+                example: 수정할 제목이에요
+              content:
+                type: string
+                description: 게시글 내용
+                example: 나는야 슈퍼 개발자가 될거에요!
+      responses:
+        '201':
+          description: 게시글 생성 성공!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: '60d21b4667d0d8992e610c89'
+                  title:
+                    type: string
+                    example: '새로운 게시글 제목'
+                  content:
+                    type: string
+                    example: '이것은 새로운 게시글의 내용입니다.'
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: '2023-06-19T12:34:56Z'
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: '2023-06-19T12:34:56Z'
+        '500':
+          description: 서버 오류
   /api/posts/{post_id}:
     get:
       tags:
@@ -81,7 +127,6 @@ paths:
           description: 게시글을 찾을 수 없음
         '500':
           description: 서버 오류
-  /api/posts/{post_id}:
     patch:
       tags:
         - Posts
@@ -164,54 +209,6 @@ paths:
                 message:
                   type: string
                   example: 서버 에러, 관리자에게 문의 바랍니다.
-  /api/posts:
-    post:
-      tags:
-        - Posts
-      summary: 게시글 생성
-      description: 게시글 생성하기
-      parameters:
-        - name: Posts
-          in: body
-          required: true
-          schema:
-            properties:
-              title:
-                type: string
-                description: 게시글 제목
-                example: 수정할 제목이에요
-              content:
-                type: string
-                description: 게시글 내용
-                example: 나는야 슈퍼 개발자가 될거에요!
-      responses:
-        '201':
-          description: 게시글 생성 성공!
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  _id:
-                    type: string
-                    example: '60d21b4667d0d8992e610c89'
-                  title:
-                    type: string
-                    example: '새로운 게시글 제목'
-                  content:
-                    type: string
-                    example: '이것은 새로운 게시글의 내용입니다.'
-                  createdAt:
-                    type: string
-                    format: date-time
-                    example: '2023-06-19T12:34:56Z'
-                  updatedAt:
-                    type: string
-                    format: date-time
-                    example: '2023-06-19T12:34:56Z'
-        '500':
-          description: 서버 오류
-  /api/posts/{post_id}:
     delete:
       tags:
         - Posts
