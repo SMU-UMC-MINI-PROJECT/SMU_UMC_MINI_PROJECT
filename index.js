@@ -10,7 +10,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import { postRouter } from './srcs/routes/post.route.js';
 import { commentRouter } from './srcs/routes/comment.route.js';
-import { postImage } from './srcs/controllers/image.controller.js';
+import { imageRouter } from './srcs/routes/image.route.js';
 
 const app = express();
 const port = 3000;
@@ -32,9 +32,7 @@ app.use(
 // routes
 app.use('/api/posts', postRouter);
 app.use('/api/comments', commentRouter);
-
-// image upload
-app.post('/api/image', postImage);
+app.use('/api/image', imageRouter);
 
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
