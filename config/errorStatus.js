@@ -32,4 +32,10 @@ export const errStatus = {
     code: 'COMMON004',
     message: '금지된 요청입니다.',
   },
+  WRONG_EXTENSION: {
+    status: StatusCodes.WRONG_EXTENSION,
+    isSuccess: false,
+    code: 'COMMON005',
+    message: '잘못된 확장자입니다.',
+  },
 };

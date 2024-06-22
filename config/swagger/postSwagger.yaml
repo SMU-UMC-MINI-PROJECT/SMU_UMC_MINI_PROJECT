@@ -4,7 +4,7 @@ info:
   title: SMU_UMC_MINI_PROJECT - Swagger
   description: SMU_UMC_MINI_PROJECT - Swagger입니다.
 paths:
-  /api/posts/get:
+  /api/posts:
     get:
       tags:
         - Posts
@@ -39,7 +39,53 @@ paths:
                       example: '2023-06-19T12:34:56Z'
         '500':
           description: 서버 오류
-  /api/posts/get/{post_id}:
+    post:
+      tags:
+        - Posts
+      summary: 게시글 생성
+      description: 게시글 생성하기
+      parameters:
+        - name: Posts
+          in: body
+          required: true
+          schema:
+            properties:
+              title:
+                type: string
+                description: 게시글 제목
+                example: 수정할 제목이에요
+              content:
+                type: string
+                description: 게시글 내용
+                example: 나는야 슈퍼 개발자가 될거에요!
+      responses:
+        '201':
+          description: 게시글 생성 성공!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: '60d21b4667d0d8992e610c89'
+                  title:
+                    type: string
+                    example: '새로운 게시글 제목'
+                  content:
+                    type: string
+                    example: '이것은 새로운 게시글의 내용입니다.'
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: '2023-06-19T12:34:56Z'
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: '2023-06-19T12:34:56Z'
+        '500':
+          description: 서버 오류
+  /api/posts/{post_id}:
     get:
       tags:
         - Posts
@@ -81,7 +127,6 @@ paths:
           description: 게시글을 찾을 수 없음
         '500':
           description: 서버 오류
-  /api/posts/patch/{post_id}:
     patch:
       tags:
         - Posts
@@ -164,54 +209,6 @@ paths:
                 message:
                   type: string
                   example: 서버 에러, 관리자에게 문의 바랍니다.
-  /api/posts/create:
-    post:
-      tags:
-        - Posts
-      summary: 게시글 생성
-      description: 게시글 생성하기
-      parameters:
-        - name: Posts
-          in: body
-          required: true
-          schema:
-            properties:
-              title:
-                type: string
-                description: 게시글 제목
-                example: 수정할 제목이에요
-              content:
-                type: string
-                description: 게시글 내용
-                example: 나는야 슈퍼 개발자가 될거에요!
-      responses:
-        '201':
-          description: 게시글 생성 성공!
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  _id:
-                    type: string
-                    example: '60d21b4667d0d8992e610c89'
-                  title:
-                    type: string
-                    example: '새로운 게시글 제목'
-                  content:
-                    type: string
-                    example: '이것은 새로운 게시글의 내용입니다.'
-                  createdAt:
-                    type: string
-                    format: date-time
-                    example: '2023-06-19T12:34:56Z'
-                  updatedAt:
-                    type: string
-                    format: date-time
-                    example: '2023-06-19T12:34:56Z'
-        '500':
-          description: 서버 오류
-  /api/posts/delete/{post_id}:
     delete:
       tags:
         - Posts
@@ -229,5 +226,219 @@ paths:
           description: 게시글 삭제 성공!
         '404':
           description: 게시글을 찾을 수 없음
+        '500':
+          description: 서버 오류
+  /api/image:
+    post:
+      tags:
+        - Image
+      summary: 이미지 업로드
+      consumes:
+        - multipart/form-data # 문서 타입 지정
+      parameters:
+        - in: formData
+          name: image
+          type: file
+          description: 파일 업로드
+      # 아래 주석은 로그인 구현후 풀 것
+      # - in: formData
+      #   name: userId
+      #   type: integer
+      #   description: 사용자 아이디
+      responses:
+        '200':
+          description: 이미지 업로드 완료!
+        '500':
+          description: 서버 오류
+  /api/comments/{post_id}:
+    get:
+      tags:
+        - Comments
+      summary: 댓글 조회
+      description: 게시글 ID로 댓글 조회하기
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          description: 댓글 조회할 게시글의 ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 댓글 조회 성공!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: '66754d35f8a8a932ceeddd17'
+                  post:
+                    type: string
+                    example: '667455c79bd3ba64469a44a9'
+                  content:
+                    type: string
+                    example: '이것은 첫번째 게시글의 내용입니다.'
+                  isDeleted: 'false'
+                  text:
+                    type: string
+                    example: '이것은 댓글 내용입니다.'
+                  depth:
+                    type: number
+                    example: '1`'
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: '2023-06-19T12:34:56Z'
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: '2023-06-19T12:34:56Z'
+        '404':
+          description: 댓글을 찾을 수 없음
+        '500':
+          description: 서버 오류
+    post:
+      tags:
+        - Comments
+      summary: 댓글 생성
+      description: 게시글 ID로 댓글 생성하기
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          description: 댓글 생성할 게시글의 ID
+          schema:
+            type: string
+        - name: signIn
+          in: body
+          required: true
+          schema:
+            properties:
+              text:
+                type: string
+                description: 생성할 댓글 내용
+                example: 나는 생성할 댓글 내용이야!
+      responses:
+        '200':
+          description: 댓글 생성 성공!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: '66754d35f8a8a932ceeddd17'
+                  post:
+                    type: string
+                    example: '667455c79bd3ba64469a44a9'
+                  isDeleted: 'false'
+                  text:
+                    type: string
+                    example: '이것은 생성된 댓글 내용입니다.'
+                  depth:
+                    type: number
+                    example: '1`'
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: '2023-06-19T12:34:56Z'
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: '2023-06-19T12:34:56Z'
+        '404':
+          description: 댓글을 찾을 수 없음
+        '500':
+          description: 서버 오류
+  /api/comment/{post_id}/{comment_id}:
+    patch:
+      tags:
+        - Comments
+      summary: 댓글 수정
+      description: 게시글 ID와 댓글 ID로 댓글 수정하기
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          description: 댓글 수정할 게시글의 ID
+          schema:
+            type: string
+        - name: comment_id
+          in: path
+          required: true
+          description: 댓글 수정할 댓글의 ID
+          schema:
+            type: string
+        - name: signIn
+          in: body
+          required: true
+          schema:
+            properties:
+              text:
+                type: string
+                description: 수정할 댓글 내용
+                example: 호우!
+      responses:
+        '200':
+          description: 댓글 수정 성공!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: '66754d35f8a8a932ceeddd17'
+                  post:
+                    type: string
+                    example: '667455c79bd3ba64469a44a9'
+                  isDeleted: 'false'
+                  text:
+                    type: string
+                    example: '이것은 수정된 댓글 내용입니다.'
+                  parentComment:
+                    type: string
+                    string: 'null'
+                  depth:
+                    type: number
+                    example: '1`'
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: '2023-06-19T12:34:56Z'
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: '2023-06-19T12:34:56Z'
+        '404':
+          description: 댓글을 찾을 수 없음
+        '500':
+          description: 서버 오류
+    delete:
+      tags:
+        - Comments
+      summary: 댓글 삭제
+      description: 게시글 ID와 댓글 ID로 댓글 삭제하기
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          description: 삭제할 댓글의 게시글 ID
+          schema:
+            type: string
+        - name: comment_id
+          in: path
+          required: true
+          description: 삭제할 댓글의 ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 댓글 삭제 성공!
+        '404':
+          description: 댓글을 찾을 수 없음
         '500':
           description: 서버 오류
