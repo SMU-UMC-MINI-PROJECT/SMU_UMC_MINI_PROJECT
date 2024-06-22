@@ -1,0 +1,236 @@
+openapi: 3.0.0
+info:
+  title: UMC_MINI_PROJECT_API
+  description: API for user signup and login
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local server
+
+paths:
+  /api/signup:
+    post:
+      summary: User signup
+      description: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                studentId:
+                  type: string
+                  example: "student123"
+                password:
+                  type: string
+                  example: "password"
+                name:
+                  type: string
+                  example: "정준영"
+                major:
+                  type: string
+                  example: "컴퓨터과학"
+      responses:
+        '200':
+          description: Signup successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2001
+                  message:
+                    type: string
+                    example: "회원가입 성공입니다."
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: string
+                    example: "COMMON001"
+                  message:
+                    type: string
+                    example: "잘못된 요청입니다."
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: string
+                    example: "MEMBER002"
+                  message:
+                    type: string
+                    example: "이미 가입하였습니다."
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: string
+                    example: "COMMON000"
+                  message:
+                    type: string
+                    example: "서버 에러, 관리자에게 문의 바랍니다."
+
+  /api/login:
+    post:
+      summary: User login
+      description: Authenticate a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                studentId:
+                  type: string
+                  example: "student123"
+                password:
+                  type: string
+                  example: "password"
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: "로그인 성공"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: string
+                    example: "COMMON001"
+                  message:
+                    type: string
+                    example: "잘못된 요청입니다."
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: string
+                    example: "MEMBER002"
+                  message:
+                    type: string
+                    example: "입력하신 정보가 없습니다. 회원가입을 먼저 진행해주세요."
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: string
+                    example: "COMMON000"
+                  message:
+                    type: string
+                    example: "서버 에러, 관리자에게 문의 바랍니다."
+components:
+  schemas:
+    SignupRequest:
+      type: object
+      required:
+        - studentId
+        - password
+        - name
+        - major
+      properties:
+        studentId:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+        major:
+          type: string
+    SignupResponse:
+      type: object
+      properties:
+        isSuccess:
+          type: boolean
+        code:
+          type: integer
+        message:
+          type: string
+    LoginRequest:
+      type: object
+      required:
+        - studentId
+        - password
+      properties:
+        studentId:
+          type: string
+        password:
+          type: string
+    LoginResponse:
+      type: object
+      properties:
+        isSuccess:
+          type: boolean
+        code:
+          type: integer
+        message:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        isSuccess:
+          type: boolean
+        code:
+          type: string
+        message:
+          type: string
