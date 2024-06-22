@@ -34,7 +34,7 @@ app.use('/api/posts', postRouter);
 app.use('/api/comments', commentRouter);
 
 // image upload
-app.post('/upload', uploadImage.single('image'), (req, res) => {
+app.post('/api/image', uploadImage.single('image'), (req, res) => {
   try {
     // 업로드가 성공적으로 완료된 경우
     const file = req.file;
