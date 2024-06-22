@@ -266,11 +266,15 @@ paths:
               title:
                 type: string
                 description: 게시글 제목
-                example: 수정할 제목이에요
+                example: 공지할 제목이에요
               content:
                 type: string
                 description: 게시글 내용
                 example: 나는야 슈퍼 개발자가 될거에요!
+              announce:
+                type: string
+                description: 공지유무
+                example: 'true'
       responses:
         '201':
           description: 게시글 생성 성공!
@@ -278,24 +282,6 @@ paths:
             application/json:
               schema:
                 type: object
-                properties:
-                  _id:
-                    type: string
-                    example: '60d21b4667d0d8992e610c89'
-                  title:
-                    type: string
-                    example: '새로운 게시글 제목'
-                  content:
-                    type: string
-                    example: '이것은 새로운 게시글의 내용입니다.'
-                  createdAt:
-                    type: string
-                    format: date-time
-                    example: '2023-06-19T12:34:56Z'
-                  updatedAt:
-                    type: string
-                    format: date-time
-                    example: '2023-06-19T12:34:56Z'
         '500':
           description: 서버 오류
   /api/posts/{post_id}:
@@ -311,9 +297,6 @@ paths:
           description: 조회할 게시글의 ID
           schema:
             type: string
-      responses:
-        '200':
-          description: 게시글 1개 조회 성공!
           content:
             application/json:
               schema:
@@ -336,6 +319,9 @@ paths:
                     type: string
                     format: date-time
                     example: '2023-06-19T12:34:56Z'
+      responses:
+        '200':
+          description: 게시글 1개 조회 성공!
         '404':
           description: 게시글을 찾을 수 없음
         '500':
@@ -365,63 +351,15 @@ paths:
                 type: string
                 description: 게시글 내용
                 example: 나는야 개발자가 될거애요
-          responses:
-          '200':
-            description: 회원 가입 성공!
-            schema:
-              type: object
-              properties:
-                status:
-                  type: integer
-                  example: 200
-                isSuccess:
-                  type: boolean
-                  example: true
-                code:
-                  type: integer
-                  example: 2000
-                message:
-                  type: string
-                  example: 'success!'
-                data:
-                  type: object
-                  example:
-                    { 'email': 'swaggerTest@mail.com', 'name': 'swagger' }
-
-          '400':
-            description: 잘못된 요청
-            schema:
-              type: object
-              properties:
-                status:
-                  type: integer
-                  example: 400
-                isSuccess:
-                  type: boolean
-                  example: false
-                code:
-                  type: integer
-                  example: COMMON001
-                message:
-                  type: string
-                  example: 잘못된 요청입니다
-          '500':
-            description: 서버 에러
-            schema:
-              type: object
-              properties:
-                status:
-                  type: integer
-                  example: 500
-                isSuccess:
-                  type: boolean
-                  example: false
-                code:
-                  type: integer
-                  example: COMMON000
-                message:
-                  type: string
-                  example: 서버 에러, 관리자에게 문의 바랍니다.
+              announce:
+                type: string
+                description: 공지유무
+                example: 'false'
+      responses:
+        '404':
+          description: 게시글을 찾을 수 없음
+        '500':
+          description: 서버 오류
     delete:
       tags:
         - Posts
