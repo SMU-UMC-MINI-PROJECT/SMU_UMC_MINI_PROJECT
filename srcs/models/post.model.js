@@ -10,10 +10,12 @@ const PostSchema = mongoose.Schema(
       type: String,
       required: [true, '내용을 작성해주세요'],
     },
-    // announce: {
-    //   type: Boolean,
-    //   required: [true, '공지 유무를 작성해주세요'],
-    // },
+    announce: {
+      type: String,
+      enum: ['false', 'true'],
+      default: 'false',
+      required: false,
+    },
   },
   {
     timestamps: true,
