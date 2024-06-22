@@ -35,14 +35,14 @@ app.use('/api/posts', postRouter);
 app.use('/api/comments', commentRouter);
 app.use('/api/image', imageRouter);
 
-app.use((err, req, res, next) => {
-  res.locals.message = err.message;
-  // 개발환경이면 에러를 출력하고 아니면 출력하지 않기
-  res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
-  res
-    .status(errStatus.INTERNAL_SERVER_ERROR || err.data.status)
-    .send(response(err.data));
-});
+// app.use((err, req, res, next) => {
+//   res.locals.message = err.message;
+//   // 개발환경이면 에러를 출력하고 아니면 출력하지 않기
+//   res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
+//   res
+//     .status(errStatus.INTERNAL_SERVER_ERROR || err.data.status)
+//     .send(response(err.data));
+// });
 
 const connectDB = async () => {
   try {

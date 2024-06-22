@@ -8,7 +8,13 @@ const getPostLogic = async (id) => {
 };
 
 const createPostLogic = async (postData) => {
-  return await Post.create(postData);
+  try {
+    const newPost = await Post.create(postData);
+    return newPost;
+  } catch (error) {
+    console.error('Error creating post:', error);
+    throw error;
+  }
 };
 
 const updatePostLogic = async (id, postData) => {
