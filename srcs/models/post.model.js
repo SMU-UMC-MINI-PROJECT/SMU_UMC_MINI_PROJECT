@@ -2,13 +2,6 @@ import mongoose from 'mongoose';
 
 const PostSchema = mongoose.Schema(
   {
-    // 유저 나중에 연결해줄 것
-    // author: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: 'user',
-    //   require: true,
-    // },
-
     title: {
       type: String,
       required: [true, '제목을 작성해주세요'],
@@ -17,9 +10,9 @@ const PostSchema = mongoose.Schema(
       type: String,
       required: [true, '내용을 작성해주세요'],
     },
-    image: {
-      type: String,
-      required: false,
+    announce: {
+      type: Boolean,
+      required: [true, '공지 유무를 작성해주세요'],
     },
   },
   {
