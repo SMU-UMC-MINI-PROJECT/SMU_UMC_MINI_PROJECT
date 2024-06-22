@@ -7,11 +7,6 @@ const CommentSchema = mongoose.Schema(
       ref: 'post',
       required: true,
     },
-    // author: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: 'user',
-    //   required: true,
-    // },
     // 대댓글
     parentComment: {
       type: mongoose.Schema.Types.ObjectId,
