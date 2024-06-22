@@ -12,6 +12,9 @@ import { specs } from './config/swagger.js';
 import { postRouter } from './srcs/routes/post.route.js';
 import { commentRouter } from './srcs/routes/comment.route.js';
 import { imageRouter } from './srcs/routes/image.route.js';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import { default as setupSocketIO } from './utils/io.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -58,3 +61,21 @@ const connectDB = async () => {
 };
 
 connectDB();
+
+// HTTP 서버 및 Socket.IO 서버 생성
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: 'http://localhost:5173', // 클라이언트의 실제 오리진으로 변경
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+  }
+});
+
+setupSocketIO(io);
+
+// 서버 시작
+httpServer.listen(5001, () => {
+  console.log('Server is running on port 5001');
+});
