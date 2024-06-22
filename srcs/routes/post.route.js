@@ -9,12 +9,6 @@ import {
 
 export const postRouter = express.Router();
 
-postRouter.get('', getPosts);
+postRouter.route('').get(getPosts).post(createPost);
 
-postRouter.get('/:id', getPost);
-
-postRouter.post('', createPost);
-
-postRouter.patch('/:id', updatePost);
-
-postRouter.delete('/:id', deletePost);
+postRouter.route('/:id').get(getPost).patch(updatePost).delete(deletePost);
