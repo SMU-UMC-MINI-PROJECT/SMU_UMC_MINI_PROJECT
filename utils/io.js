@@ -2,16 +2,29 @@ import socketChatController from '../srcs/controllers/socketChat.controller.js';
 import socketUserController from '../srcs/controllers/socketUser.controller.js';
 
 const setupSocketIO = (io) => {
-    // 소켓 연결 설정
     io.on("connection", async (socket) => {
         console.log("Client connected:", socket.id);
 
         // 로그인 이벤트 처리
         socket.on("login", async (data, cb) => {
             try {
-                const user = await socketUserController.saveUser(data[0], data[1], socket.id);
+                const [name, phoneNum] = data;
+                const user = await socketUserController.isUser(name, phoneNum);
+                if(!user){
+                    user = await socketUserController.saveUser(name, phoneNum, socket.id);
+                }
+                if (!user.socketIsAdmin) {
+                    socket.join(socket.id);
+                } else {
+                    // 관리자는 모든 방에 접속 가능
+                    const rooms = io.sockets.adapter.rooms;
+                    for (let room of rooms) {
+                        socket.join(room);
+                    }
+                }
+
                 const welcomeMessage = {
-                    chat: `${user.socketUserName} has joined the room.`,
+                    chat: `${user.socketUserName} 님이 채팅방에 입장했습니다.`,
                     user: { id: null, name: "system" },
                 };
                 io.emit("message", welcomeMessage);
@@ -25,7 +38,6 @@ const setupSocketIO = (io) => {
         socket.on("sendMessage", async (message, cb) => {
             try {
                 const user = await socketUserController.checkUser(socket.id);
-                console.log('1111',user)
                 const newMessage = await socketChatController.saveChat(message, user);
                 io.emit("message", newMessage);
                 cb({ ok: true });

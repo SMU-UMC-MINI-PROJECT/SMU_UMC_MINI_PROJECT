@@ -10,7 +10,7 @@ socketUserController.saveUser = async (userName, phoneNumber, sid) => {
             socketUserName: userName,
             socketUserPhone: phoneNumber,
             token: sid,
-            socketIsAdmin: true,
+            socketIsAdmin: false,
         });
     }
 
@@ -19,8 +19,30 @@ socketUserController.saveUser = async (userName, phoneNumber, sid) => {
 };
 socketUserController.checkUser=async(sid)=>{
     const user = await SocketUser.findOne({token:sid})
-    console.log('1111111', user);
     if(!user) throw new Error('User not found');
     return user;
+}
+socketUserController.isUser = async (userName, phoneNumber)=>{
+    let socketUser = await SocketUser.findOne({socketUserName: userName, socketUserPhone: phoneNumber})
+    if(socketUser){
+        return socketUser;
+    }
+    else{
+        return false;
+    }
+}
+socketUserController.getMessages = async (userName, phoneNumber)=>{
+    let socketUser = await SocketUser.findOne({socketUserName: userName, socketUserPhone: phoneNumber})
+    if(socketUser){
+        let userId = socketUser._id
+        const chats = await SocketChat.find({ user: {id: userId }});
+        let messages = []
+        for (const i in chats){
+            console.log('!!!!!!!!!', chats[i].chat)
+            messages.push(chats[i].chat);
+        }
+        return messages;
+    }
+    return false;
 }
 export default socketUserController;
