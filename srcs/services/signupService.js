@@ -14,8 +14,17 @@ export const signupService = async (studentId, password) => {
     return "fail";
   }
   
-  const browser = await puppeteer.launch({ headless: false});
-
+  // headless: false로 Chromium을 GUI 모드로 실행할 경우
+  if (process.env.NODE_ENV === 'ubuntu') {
+    launchOptions = {
+      executablePath: '/usr/bin/google-chrome',
+      headless: true,
+    };
+  } else {
+    launchOptions = {
+      headless: true, // 기본적으로 headless 모드
+    };
+  }
   const page = await browser.newPage();
 
   // e-campus 크롤링
