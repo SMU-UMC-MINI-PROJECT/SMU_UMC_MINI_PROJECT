@@ -16,6 +16,10 @@ const PostSchema = mongoose.Schema(
       default: 'false',
       required: false,
     },
+    student: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Student',
+    },
   },
   {
     timestamps: true,
