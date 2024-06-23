@@ -5,7 +5,8 @@ socketChatController.saveChat = async(message, user)=>{
         chat:message,
         user:{
             id:user._id,
-            name:user.name
+            name:user.name,
+            socketUserPhone:user.socketUserPhone
         }
     })
     await newMessage.save();

@@ -3,22 +3,22 @@ import SocketUser from '../models/socketUser.model.js';
 const socketUserController = {};
 
 socketUserController.saveUser = async (userName, phoneNumber, sid) => {
-    let user = await SocketUser.findOne({ socketUserName: userName });
+    let user = await SocketUser.findOne({ name: userName });
 
     if (!user) {
         user = new SocketUser({
-            socketUserName: userName,
+            name: userName,
             socketUserPhone: phoneNumber,
             token: sid,
-            socketIsAdmin: false,
+            socketIsAdmin: true,
         });
     }
 
     await SocketUser.create(user);
     return user;
 };
-socketUserController.isUser = async(userName)=>{
-    let user = await SocketUser.findOne({ socketUserName: userName });
+socketUserController.isUser = async(userName, phoneNum)=>{
+    let user = await SocketUser.findOne({ name: userName, socketUserPhone:phoneNum });
     if(user){
         return user
     }
@@ -26,9 +26,17 @@ socketUserController.isUser = async(userName)=>{
         return false;
     }
 }
-socketUserController.checkUser=async(sid)=>{
+socketUserController.updateToken = async(userName, phoneNum, sid)=>{
+    await SocketUser.updateOne(
+        { name: userName, socketUserPhone:phoneNum },
+        {$set:{'token':sid}}
+    )
+    let user = await SocketUser.findOne({ name: userName, socketUserPhone:phoneNum });
+    return user;
+
+}
+socketUserController.checkUserByToken=async(sid)=>{
     const user = await SocketUser.findOne({token:sid});
-    console.log('1111111', user);
     if(!user) throw new Error('User not found');
     return user;
 }

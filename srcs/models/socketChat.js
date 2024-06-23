@@ -6,8 +6,12 @@ const SocketChatSchema = new Schema(
     {
         chat: String,
         user: {
-            type: Schema.Types.ObjectId,
-            ref: 'socketUser',
+            id: {
+                type: Schema.ObjectId,
+                ref: "SocketUser",
+            },
+            name: String,
+            socketUserPhone: String,
         },
     },
     { timestamps: true }  // corrected from "timestamp" to "timestamps"

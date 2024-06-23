@@ -9,7 +9,7 @@ const SocketUserSchema = mongoose.Schema(
     //   require: true,
     // },
 
-    socketUserName: {
+    name: {
       type: String,
       required: [true, '성함을 입력해주세요'],
     },
