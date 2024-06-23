@@ -10,6 +10,13 @@ import {
 
 export const postRouter = express.Router();
 
-postRouter.route('/').get(jwtMiddleware,getPosts).post(jwtMiddleware,createPost);
+postRouter
+  .route('/')
+  .post(jwtMiddleware, createPost)
+  .get(jwtMiddleware, getPosts);
 
-postRouter.route('/:id').get(jwtMiddleware,getPost).patch(jwtMiddleware,updatePost).delete(jwtMiddleware,deletePost);
+postRouter
+  .route('/:post_id')
+  .get(jwtMiddleware, getPost)
+  .patch(jwtMiddleware, updatePost)
+  .delete(jwtMiddleware, deletePost);

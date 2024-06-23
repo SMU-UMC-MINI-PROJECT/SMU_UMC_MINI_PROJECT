@@ -1,6 +1,6 @@
 //swagger.js
 import swaggerJSDoc from 'swagger-jsdoc';
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 dotenv.config();
 
 const options = {
@@ -10,20 +10,20 @@ const options = {
       version: '1.0.0',
       description: 'UMC_MINI_PROJECT_API, API 설명',
     },
-    host: `${process.env.SERVER_IP}`,
-    basePath: '/',
+    //host: process.env.SERVER_IP || 'localhost:3000',
+    host: 'localhost:3000',
+    basepath: '../',
     schemes: ['http'],
     securityDefinitions: {
-      bearerAuth: {
+      jwt: {
         type: 'apiKey',
         name: 'Authorization',
         in: 'header',
-        description: 'Bearer token to access these API endpoints',
       },
     },
   },
-  apis: ['./config/swagger.js', './srcs/routes/*.js', './config/swagger/*'], 
+  apis: ['./config/swagger.js', './srcs/routes/*.js', './config/swagger/*'],
 };
 const specs = swaggerJSDoc(options);
 
-export { specs }; 
+export { specs };

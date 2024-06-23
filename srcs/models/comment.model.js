@@ -1,15 +1,25 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-const CommentSchema = mongoose.Schema(
+const {
+  Types: { ObjectId },
+} = Schema;
+
+const CommentSchema = new Schema(
   {
+    writer: {
+      type: ObjectId,
+      required: true,
+      ref: 'Student',
+    },
     post: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'post',
+      type: ObjectId,
+      ref: 'post_id',
       required: true,
     },
+    text: { type: String, required: [true, '댓글을 작성해주세요'] },
     // 대댓글
     parentComment: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: ObjectId,
       ref: 'comment',
     },
     depth: {
@@ -21,7 +31,6 @@ const CommentSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    text: { type: String, required: [true, '댓글을 작성해주세요'] },
   },
   {
     toObject: { virtuals: true },

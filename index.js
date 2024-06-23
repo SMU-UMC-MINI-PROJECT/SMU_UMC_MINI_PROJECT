@@ -22,12 +22,10 @@ import { jwtMiddleware } from './config/jwt.js';
 const app = express();
 const port = process.env.PORT || 3000;
 
-
-
 app.set('port', port); // 서버 포트 지정
 const corsOptions = {
   origin: '*', // 모든 출처 허용
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions)); // CORS 설정
 app.use(express.static('public')); // 정적 파일 접근
@@ -39,8 +37,9 @@ dotenv.config(); // .env 파일 사용 (환경 변수 관리)
 app.use(
   '/api-docs',
   swaggerUi.serve,
-  swaggerUi.setup(specs, { explorer: false })
+  swaggerUi.setup(specs)
 );
+
 
 // routes
 app.use('/api/signup', signupRouter);
@@ -50,8 +49,6 @@ app.use('/api/posts', postRouter);
 app.use('/api/comments', commentRouter);
 app.use('/api/image', imageRouter);
 
-// 이미지 업로드 테스팅할 때 아래 미들웨어 주석처리할 것 (업로드 실패할 경우 에러 메시지가 이상하게 뜸)
-// 애초에 왜 있는지도 잘 모르겠음 - Layton -
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
   // 개발환경이면 에러를 출력하고 아니면 출력하지 않기
