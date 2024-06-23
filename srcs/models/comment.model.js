@@ -1,15 +1,19 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-const CommentSchema = mongoose.Schema(
+const {
+  Types: { ObjectId },
+} = Schema;
+
+const CommentSchema = new Schema(
   {
     post: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: ObjectId,
       ref: 'post',
       required: true,
     },
     // 대댓글
     parentComment: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: ObjectId,
       ref: 'comment',
     },
     depth: {
@@ -29,6 +33,7 @@ const CommentSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
 // 가상 필드는 실제 db에 저장 안된다. 관계형 데이터 처리할 때 유용함
 
 CommentSchema.virtual('comments', {

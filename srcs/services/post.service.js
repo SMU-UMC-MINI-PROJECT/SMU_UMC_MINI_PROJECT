@@ -1,41 +1,55 @@
 import Post from '../models/post.model.js';
+import { Student } from '../models/signupModel.js';
 const getPostsLogic = async () => {
-  return await Post.find({});
+  return await Post.find({}).populate('writer');
 };
 
-const getPostLogic = async (id) => {
-  return await Post.findById(id);
+const getPostLogic = async (post_id) => {
+  const postData = await Post.findById(post_id);
+  const userData = await Post.populate(postData, { path: 'writer' });
+  return {
+    Post: postData,
+    User: userData,
+  };
 };
 
-const createPostLogic = async (postData) => {
+const createPostLogic = async (postData, user_id) => {
   try {
     const newPost = await Post.create(postData);
-    return newPost;
+    const userData = Student.findById(user_id);
+    return {
+      Post: newPost,
+      User: userData,
+    };
   } catch (error) {
     console.error('Error creating post:', error);
     throw error;
   }
 };
 
-const updatePostLogic = async (id, postData) => {
-  const post = await Post.findById(id);
+const updatePostLogic = async (post_id, postData) => {
+  const post = await Post.findById(post_id);
   const { announce } = postData;
   if (!post) {
     throw new Error('게시글이 없어요!');
-    // 게시글 수정시에는 생성과 달리 enum 타입이 기능을 못해서 에러 체킹을 여기서 해줌
-  } else if (announce !== 'true' && announce !== 'false') {
+  } else if (typeof announce !== 'boolean') {
     throw new Error('announce에는 true 또는 false만 넣을 수 있어요!');
   }
-  await Post.findByIdAndUpdate(id, postData);
-  return await Post.findById(id);
+  await Post.findByIdAndUpdate(post_id, postData);
+  const updatedPost = await Post.findById(post_id);
+  const userData = await Post.populate(updatedPost, { path: 'writer' });
+  return {
+    Post: updatedPost,
+    User: userData,
+  };
 };
 
-const deletePostLogic = async (id) => {
-  const post = await Post.findById(id);
+const deletePostLogic = async (post_id) => {
+  const post = await Post.findById(post_id);
   if (!post) {
     throw new Error('게시글이 없어요!');
   }
-  await Post.findByIdAndDelete(id);
+  await Post.findByIdAndDelete(post_id);
   return post;
 };
 
