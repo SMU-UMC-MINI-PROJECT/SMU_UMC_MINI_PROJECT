@@ -47,8 +47,10 @@ export const signupService = async (studentId, password) => {
             const existingStudent = await Student.findOne({ studentId });
 
             if (existingStudent) {
+                // 이미 가입된 학번인 경우 처리
+                console.log(`학번 ${studentId}은(는) 이미 등록되어 있습니다.`);
                 await browser.close();
-                return successStatus.ISSUCCESS;
+                return successStatus.SUCCESS;
             }
 
             // MongoDB에 저장하기 전에 비밀번호를 해싱

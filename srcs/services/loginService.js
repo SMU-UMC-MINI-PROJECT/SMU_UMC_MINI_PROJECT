@@ -1,6 +1,7 @@
 import { errStatus } from '../../config/errorStatus.js';
 import { successStatus } from '../../config/successStatus.js';
 import { Student } from '../models/signupModel.js';
+import bcrypt from 'bcrypt';
 
 export const loginService = async (studentId, password) => {
   try {
@@ -12,11 +13,13 @@ export const loginService = async (studentId, password) => {
       console.log('학생 정보 없음');
       throw { data: errStatus.INVALID_CREDENTIALS };
     }
+    const isPasswordMatch = await bcrypt.compare(password, student.password);
+    console.log('비밀번호 일치 여부:', isPasswordMatch);
 
-    if (password !== student.password) {
+    if (!isPasswordMatch) { {
       console.log('비밀번호 불일치');
       throw { data: errStatus.INVALID_CREDENTIALS };
-    }
+    } }
 
     console.log('로그인 성공');
     return successStatus.ISSUCCESS;
