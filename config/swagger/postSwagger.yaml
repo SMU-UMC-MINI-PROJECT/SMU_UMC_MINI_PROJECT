@@ -214,11 +214,26 @@ paths:
     get:
       tags:
         - Posts
-      summary: 게시글 전체 조회
-      description: 게시글 전체 조회하기
+      summary: 게시글 페이지네이션 조회
+      description: 페이지 번호와 오프셋을 사용하여 게시글을 페이지네이션 방식으로 조회합니다.
+      parameters:
+        - name: offset
+          in: query
+          description: 한 페이지에 표시할 게시글 수
+          required: true
+          schema:
+            type: integer
+            example: 2
+        - name: page
+          in: query
+          description: 조회할 페이지 번호 (0부터 시작)
+          required: true
+          schema:
+            type: integer
+            example: 1
       responses:
         '200':
-          description: 게시글 전체 조회 성공!
+          description: 게시글 페이지네이션 조회 성공!
           content:
             application/json:
               schema:
@@ -246,7 +261,7 @@ paths:
         '500':
           description: 서버 오류
       security:
-        - bearerAuth: []  
+        - bearerAuth: []
     post:
       tags:
         - Posts
@@ -280,7 +295,7 @@ paths:
         '500':
           description: 서버 오류
       security:
-        - bearerAuth: []    
+        - bearerAuth: []
   /api/posts/{post_id}:
     get:
       tags:
@@ -324,7 +339,7 @@ paths:
         '500':
           description: 서버 오류
       security:
-        - bearerAuth: [] 
+        - bearerAuth: []
     patch:
       tags:
         - Posts
@@ -360,7 +375,7 @@ paths:
         '500':
           description: 서버 오류
       security:
-        - bearerAuth: []   
+        - bearerAuth: []
     delete:
       tags:
         - Posts
@@ -381,7 +396,7 @@ paths:
         '500':
           description: 서버 오류
       security:
-        - bearerAuth: []    
+        - bearerAuth: []
   /api/image/{post_id}:
     get:
       tags:
@@ -399,7 +414,7 @@ paths:
         '500':
           description: 서버 오류
       security:
-        - bearerAuth: []    
+        - bearerAuth: []
     post:
       tags:
         - Image
@@ -430,7 +445,7 @@ paths:
         '500':
           description: 서버 오류
       security:
-        - bearerAuth: []    
+        - bearerAuth: []
   /api/comments/{post_id}:
     get:
       tags:
@@ -481,7 +496,7 @@ paths:
         '500':
           description: 서버 오류
       security:
-        - bearerAuth: []    
+        - bearerAuth: []
     post:
       tags:
         - Comments
@@ -537,7 +552,7 @@ paths:
         '500':
           description: 서버 오류
       security:
-        - bearerAuth: []    
+        - bearerAuth: []
   /api/comment/{post_id}/{comment_id}:
     patch:
       tags:
@@ -603,7 +618,7 @@ paths:
         '500':
           description: 서버 오류
       security:
-        - bearerAuth: []    
+        - bearerAuth: []
     delete:
       tags:
         - Comments
@@ -630,4 +645,4 @@ paths:
         '500':
           description: 서버 오류
       security:
-        - bearerAuth: []    
+        - bearerAuth: []

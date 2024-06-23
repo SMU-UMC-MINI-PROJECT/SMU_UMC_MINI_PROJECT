@@ -12,7 +12,6 @@ import {
 const getPosts = async (req, res, next) => {
   try {
     const { page, offset } = req.query;
-
     const posts = await getPostsLogic(page, offset);
     res.send(response(successStatus.GET_ALL_POSTS_SUCCESS, posts));
   } catch (err) {
