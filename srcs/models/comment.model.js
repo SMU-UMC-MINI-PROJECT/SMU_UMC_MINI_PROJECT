@@ -6,11 +6,17 @@ const {
 
 const CommentSchema = new Schema(
   {
+    writer: {
+      type: ObjectId,
+      required: true,
+      ref: 'Student',
+    },
     post: {
       type: ObjectId,
-      ref: 'post',
+      ref: 'post_id',
       required: true,
     },
+    text: { type: String, required: [true, '댓글을 작성해주세요'] },
     // 대댓글
     parentComment: {
       type: ObjectId,
@@ -25,7 +31,6 @@ const CommentSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    text: { type: String, required: [true, '댓글을 작성해주세요'] },
   },
   {
     toObject: { virtuals: true },
@@ -33,7 +38,6 @@ const CommentSchema = new Schema(
     timestamps: true,
   }
 );
-
 // 가상 필드는 실제 db에 저장 안된다. 관계형 데이터 처리할 때 유용함
 
 CommentSchema.virtual('comments', {

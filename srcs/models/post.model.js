@@ -35,7 +35,7 @@ PostSchema.set('toJSON', { virtuals: true });
 PostSchema.virtual('comments', {
   ref: 'Comment',
   localField: '_id',
-  foreignField: 'post',
+  foreignField: 'post_id',
 });
 
 export default mongoose.model('Post', PostSchema);

@@ -30,7 +30,8 @@ const getPost = async (req, res, next) => {
 
 const createPost = async (req, res) => {
   try {
-    const { user_id } = req.params;
+    const { user_id } = req.verifiedToken;
+
     const post = await createPostLogic(req.body, user_id);
     res.send(response(successStatus.MAKE_POST_SUCCESS, post));
   } catch (err) {

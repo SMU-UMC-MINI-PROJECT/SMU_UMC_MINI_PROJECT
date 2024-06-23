@@ -23,6 +23,7 @@ export const successStatus = {
     code: 'MEMBER2001',
     message: '로그인 성공',
   },
+  // 게시글 성공
   GET_ALL_POSTS_SUCCESS: {
     status: StatusCodes.OK,
     isSuccess: true,
@@ -52,5 +53,30 @@ export const successStatus = {
     isSuccess: true,
     code: 'POST200',
     message: '게시글 삭제 성공했습니다!',
+  },
+  // 댓글 성공
+  GET_COMMENTS_SUCCESS: {
+    status: StatusCodes.OK,
+    isSuccess: true,
+    code: 'COMMENT200',
+    message: '댓글 조회 성공했습니다!',
+  },
+  MAKE_COMMENT_SUCCESS: {
+    status: StatusCodes.CREATED,
+    isSuccess: true,
+    code: 'COMMENT201',
+    message: '댓글 생성 성공했습니다!',
+  },
+  UPDATE_COMMENT_SUCCESS: {
+    status: StatusCodes.OK,
+    isSuccess: true,
+    code: 'COMMENT200',
+    message: '댓글 수정 성공했습니다!',
+  },
+  DELETE_COMMENT_SUCCESS: {
+    status: StatusCodes.OK,
+    isSuccess: true,
+    code: 'COMMENT200',
+    message: '댓글 삭제 성공했습니다!',
   },
 };
