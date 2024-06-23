@@ -38,6 +38,7 @@ app.use(
   swaggerUi.setup(specs)
 );
 
+
 // routes
 app.use('/api/signup', signupRouter);
 app.use('/api/login', loginRouter);
