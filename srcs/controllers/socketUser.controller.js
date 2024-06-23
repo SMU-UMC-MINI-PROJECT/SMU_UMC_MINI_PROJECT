@@ -27,7 +27,6 @@ socketUserController.isUser = async(userName)=>{
     }
 }
 socketUserController.checkUser=async(sid)=>{
-    console.log(sid)
     const user = await SocketUser.findOne({token:sid});
     console.log('1111111', user);
     if(!user) throw new Error('User not found');

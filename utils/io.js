@@ -41,11 +41,10 @@ const setupSocketIO = (io) => {
         // 메시지 전송 이벤트 처리
         socket.on("sendMessage", async (message, cb) => {
             try {
-                console.log(socket.id)
                 const user = await socketUserController.checkUser(socket.id);
                 const newMessage = await socketChatController.saveChat(message, user);
+                console.log('0000000000000',newMessage);
                 socket.join(socket.id);
-                console.log('0000000000000',user);
                 io.emit("message", newMessage);
                 cb({ ok: true });
             } catch (err) {
