@@ -84,7 +84,8 @@ const io = new Server(httpServer, {
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
-  }
+  },
+  path: '/socket'
 });
 
 setupSocketIO(io);

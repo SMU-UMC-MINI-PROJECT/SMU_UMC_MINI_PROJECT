@@ -630,4 +630,24 @@ paths:
         '500':
           description: 서버 오류
       security:
-        - bearerAuth: []    
+        - bearerAuth: [] 
+  /socket:
+    x-websocket:
+      connect:
+        summary: "Connect to the WebSocket"
+        operationId: "connectSocket"
+        responses:
+          '101':
+            description: "Switching Protocols"
+      message:
+        summary: "Send a message"
+        operationId: "sendMessage"
+        parameters:
+          - name: "message"
+            in: "body"
+            required: true
+            schema:
+              type: "string"
+        responses:
+          '200':
+            description: "Message received"
