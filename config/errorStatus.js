@@ -59,4 +59,6 @@ export const errStatus = {
     code: 'MEMBER002',
     message: '입력하신 정보가 없습니다. 회원가입을 먼저 진행해주세요.',
   },
+  //토큰 오류
+  TOKEN_VERIFICATION_FAILURE : { "isSuccess": false, "code": "TOKEN401", "message":"JWT 토큰 검증 실패" },
 };

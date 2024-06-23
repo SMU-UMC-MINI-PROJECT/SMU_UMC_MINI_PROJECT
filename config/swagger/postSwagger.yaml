@@ -1,4 +1,3 @@
-openapi: 3.0.3
 info:
   version: 1.0.0
   title: SMU_UMC_MINI_PROJECT - Swagger
@@ -23,12 +22,6 @@ paths:
               password:
                 type: string
                 example: 'password'
-              name:
-                type: string
-                example: '정준영'
-              major:
-                type: string
-                example: '컴퓨터과학'
       responses:
         200:
           description: Signup successful
@@ -252,6 +245,8 @@ paths:
                       example: '2023-06-19T12:34:56Z'
         '500':
           description: 서버 오류
+      security:
+        - bearerAuth: []  
     post:
       tags:
         - Posts
@@ -284,6 +279,8 @@ paths:
                 type: object
         '500':
           description: 서버 오류
+      security:
+        - bearerAuth: []    
   /api/posts/{post_id}:
     get:
       tags:
@@ -326,6 +323,8 @@ paths:
           description: 게시글을 찾을 수 없음
         '500':
           description: 서버 오류
+      security:
+        - bearerAuth: [] 
     patch:
       tags:
         - Posts
@@ -360,6 +359,8 @@ paths:
           description: 게시글을 찾을 수 없음
         '500':
           description: 서버 오류
+      security:
+        - bearerAuth: []   
     delete:
       tags:
         - Posts
@@ -379,6 +380,8 @@ paths:
           description: 게시글을 찾을 수 없음
         '500':
           description: 서버 오류
+      security:
+        - bearerAuth: []    
   /api/image/{post_id}:
     get:
       tags:
@@ -395,6 +398,8 @@ paths:
           description: 이미지 조회 완료!
         '500':
           description: 서버 오류
+      security:
+        - bearerAuth: []    
     post:
       tags:
         - Image
@@ -424,6 +429,8 @@ paths:
           description: 이미지를 찾을 수 없음
         '500':
           description: 서버 오류
+      security:
+        - bearerAuth: []    
   /api/comments/{post_id}:
     get:
       tags:
@@ -473,6 +480,8 @@ paths:
           description: 댓글을 찾을 수 없음
         '500':
           description: 서버 오류
+      security:
+        - bearerAuth: []    
     post:
       tags:
         - Comments
@@ -527,6 +536,8 @@ paths:
           description: 댓글을 찾을 수 없음
         '500':
           description: 서버 오류
+      security:
+        - bearerAuth: []    
   /api/comment/{post_id}/{comment_id}:
     patch:
       tags:
@@ -591,6 +602,8 @@ paths:
           description: 댓글을 찾을 수 없음
         '500':
           description: 서버 오류
+      security:
+        - bearerAuth: []    
     delete:
       tags:
         - Comments
@@ -616,3 +629,5 @@ paths:
           description: 댓글을 찾을 수 없음
         '500':
           description: 서버 오류
+      security:
+        - bearerAuth: []    
