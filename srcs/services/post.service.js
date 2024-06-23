@@ -15,18 +15,24 @@ const getPostLogic = async (post_id) => {
 
 const createPostLogic = async (postData, user_id) => {
   try {
-    const newPost = await Post.create(postData);
-    const userData = Student.findById(user_id);
+    const user = await Student.findOne({ studentId: user_id });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const newPost = await Post.create({
+      ...postData,
+      writer: user._id,
+    });
+
     return {
       Post: newPost,
-      User: userData,
+      User: user,
     };
   } catch (error) {
     console.error('Error creating post:', error);
     throw error;
   }
 };
-
 const updatePostLogic = async (post_id, postData) => {
   const post = await Post.findById(post_id);
   const { announce } = postData;

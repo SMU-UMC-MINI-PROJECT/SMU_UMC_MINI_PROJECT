@@ -18,8 +18,6 @@ import { jwtMiddleware } from './config/jwt.js';
 const app = express();
 const port = process.env.PORT || 3000;
 
-
-
 app.set('port', port); // 서버 포트 지정
 app.use(cors()); // cors 방식 허용
 app.use(express.static('public')); // 정적 파일 접근
@@ -38,7 +36,7 @@ app.use(
 app.use('/api/signup', signupRouter);
 app.use('/api/login', loginRouter);
 
-app.use('/api/posts',jwtMiddleware, postRouter);
+app.use('/api/posts', postRouter);
 app.use('/api/comments', commentRouter);
 app.use('/api/image', imageRouter);
 

@@ -30,7 +30,8 @@ const getPost = async (req, res, next) => {
 
 const createPost = async (req, res) => {
   try {
-    const { user_id } = req.params;
+    console.log('1111111', req.currentUserId);
+    const { user_id } = req.currentUserId;
     const post = await createPostLogic(req.body, user_id);
     res.status(201).json(post);
   } catch (err) {
