@@ -33,6 +33,12 @@ jobs:
       # 만약 build 스크립트가 없는 경우, 오류 없이 지나간다.
       - run: npm run build --if-present
 
+
+      - name: Install Chromium
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser
+
       - name: Setup .env file
         run: |
           echo "AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}" >> .env

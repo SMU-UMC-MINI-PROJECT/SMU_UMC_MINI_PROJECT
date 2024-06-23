@@ -14,7 +14,8 @@ export const signupService = async (studentId, password) => {
     return "fail";
   }
   
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ headless: false});
+
   const page = await browser.newPage();
 
   // e-campus 크롤링
