@@ -11,13 +11,13 @@ const options = {
       description: 'UMC_MINI_PROJECT_API, API 설명',
     },
     host: process.env.SERVER_IP || 'localhost:3000',
+    basepath: '../',
     schemes: ['http'],
     securityDefinitions: {
-      bearerAuth: {
+      jwt: {
         type: 'apiKey',
         name: 'Authorization',
         in: 'header',
-        description: 'Bearer token to access these API endpoints',
       },
     },
   },
