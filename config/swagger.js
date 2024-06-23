@@ -1,5 +1,7 @@
 //swagger.js
 import swaggerJSDoc from 'swagger-jsdoc';
+import dotenv from "dotenv";
+dotenv.config();
 
 const options = {
   definition: {
@@ -8,8 +10,6 @@ const options = {
       version: '1.0.0',
       description: 'UMC_MINI_PROJECT_API, API 설명',
     },
-    host: 'localhost:3000',
-    basePath: '/',
     schemes: ['http'],
     securityDefinitions: {
       bearerAuth: {
