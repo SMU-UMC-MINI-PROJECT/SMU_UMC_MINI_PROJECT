@@ -14,8 +14,11 @@ import { commentRouter } from './srcs/routes/comment.route.js';
 import { imageRouter } from './srcs/routes/image.route.js';
 import { loginRouter } from './srcs/routes/loginRouter.js';
 import { signupRouter } from './srcs/routes/signupRouter.js';
+import { jwtMiddleware } from './config/jwt.js';
 const app = express();
 const port = process.env.PORT || 3000;
+
+
 
 app.set('port', port); // 서버 포트 지정
 app.use(cors()); // cors 방식 허용
@@ -28,14 +31,14 @@ dotenv.config(); // .env 파일 사용 (환경 변수 관리)
 app.use(
   '/api-docs',
   swaggerUi.serve,
-  swaggerUi.setup(specs, { explorer: true })
+  swaggerUi.setup(specs, { explorer: false })
 );
 
 // routes
 app.use('/api/signup', signupRouter);
 app.use('/api/login', loginRouter);
 
-app.use('/api/posts', postRouter);
+app.use('/api/posts',jwtMiddleware, postRouter);
 app.use('/api/comments', commentRouter);
 app.use('/api/image', imageRouter);
 

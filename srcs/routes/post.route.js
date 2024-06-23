@@ -1,4 +1,5 @@
 import express from 'express';
+import { jwtMiddleware } from '../../config/jwt.js';
 import {
   getPosts,
   getPost,
@@ -9,6 +10,6 @@ import {
 
 export const postRouter = express.Router();
 
-postRouter.route('/').get(getPosts).post(createPost);
+postRouter.route('/').get(jwtMiddleware,getPosts).post(jwtMiddleware,createPost);
 
-postRouter.route('/:id').get(getPost).patch(updatePost).delete(deletePost);
+postRouter.route('/:id').get(jwtMiddleware,getPost).patch(jwtMiddleware,updatePost).delete(jwtMiddleware,deletePost);
