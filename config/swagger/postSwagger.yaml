@@ -2,6 +2,9 @@ info:
   version: 1.0.0
   title: SMU_UMC_MINI_PROJECT - Swagger
   description: SMU_UMC_MINI_PROJECT - Swagger입니다.
+securityDefinitions:
+  basicAuth:
+    type: basic
 paths:
   /api/signup:
     post:

@@ -11,7 +11,7 @@ export const signupService = async (studentId, password) => {
 
   if (existingStudent) {
     // 이미 가입한 경우
-    return null;
+    return "fail";
   }
   
   const browser = await puppeteer.launch();
@@ -58,7 +58,7 @@ export const signupService = async (studentId, password) => {
     ) {
       
       // 학생 정보 없을 경우
-      return "fail";
+      return null;
     }
   } catch (error) {
     throw new BaseError(errStatus.INTERNAL_SERVER_ERROR);
