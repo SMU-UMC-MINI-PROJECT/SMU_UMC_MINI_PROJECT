@@ -6,21 +6,22 @@ import { Student } from '../models/signupModel.js';
 
 export const withdrawService = async (studentId) => {
   try {
-    // 학번을 기반으로 학생을 찾습니다.
+    // 학번을 기반으로 MongoDB에서 학생 정보를 찾습니다.
     const student = await Student.findOne({ studentId });
 
-    // 학생이 존재하지 않는 경우
+    // 만약 학생이 존재하지 않으면
     if (!student) {
-      return errStatus.NOT_FOUND; // 적절한 오류 상태 반환
+      return errStatus.NOT_FOUND; // 사용자가 없음을 나타내는 적절한 오류 상태 반환
     }
 
-    // MongoDB에서 학생을 삭제합니다.
+    // MongoDB에서 해당 학번의 학생 정보를 삭제합니다.
     await Student.deleteOne({ studentId });
 
-    return successStatus.ISSUCCESS; // 성공 상태 반환
+    // 성공적으로 삭제되었음을 나타내는 성공 상태 반환
+    return successStatus.ISSUCCESS;
   } catch (error) {
-    // 오류 처리
+    // 오류 발생 시 콘솔에 기록하고, 내부 서버 오류 상태를 반환합니다.
     console.error('withdrawService에서 오류 발생:', error);
-    throw errStatus.INTERNAL_SERVER_ERROR; // 내부 서버 오류 상태 반환
+    throw errStatus.INTERNAL_SERVER_ERROR;
   }
 };

@@ -14,6 +14,7 @@ import { commentRouter } from './srcs/routes/comment.route.js';
 import { imageRouter } from './srcs/routes/image.route.js';
 import { loginRouter } from './srcs/routes/loginRouter.js';
 import { signupRouter } from './srcs/routes/signupRouter.js';
+import { withdrawRouter } from './srcs/routes/withdrawRouter.js';
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -34,6 +35,7 @@ app.use(
 // routes
 app.use('/api/signup', signupRouter);
 app.use('/api/login', loginRouter);
+app.use('/api/withdraw', withdrawRouter);
 
 app.use('/api/posts', postRouter);
 app.use('/api/comments', commentRouter);
