@@ -5,12 +5,12 @@ const getPostsLogic = async () => {
 };
 
 const getPostLogic = async (post_id) => {
-  const postData = await Post.findById(post_id);
-  const userData = await Post.populate(postData, { path: 'writer' });
-  return {
-    Post: postData,
-    User: userData,
-  };
+  try {
+    const postData = await Post.findById(post_id);
+    return await Post.populate(postData, { path: 'writer' });
+  } catch (error) {
+    throw error;
+  }
 };
 
 const createPostLogic = async (postData, user_id) => {
@@ -19,35 +19,27 @@ const createPostLogic = async (postData, user_id) => {
     if (!user) {
       throw new Error('User not found');
     }
-    const newPost = await Post.create({
+    return await Post.create({
       ...postData,
-      writer: user._id,
+      writer: user,
     });
-
-    return {
-      Post: newPost,
-      User: user,
-    };
   } catch (error) {
     console.error('Error creating post:', error);
     throw error;
   }
 };
-const updatePostLogic = async (post_id, postData) => {
+const updatePostLogic = async (postData, post_id) => {
   const post = await Post.findById(post_id);
-  const { announce } = postData;
+  const announce = JSON.parse(postData.announce);
+
   if (!post) {
-    throw new Error('게시글이 없어요!');
+    throw new Error('post가 없어요');
   } else if (typeof announce !== 'boolean') {
     throw new Error('announce에는 true 또는 false만 넣을 수 있어요!');
   }
   await Post.findByIdAndUpdate(post_id, postData);
   const updatedPost = await Post.findById(post_id);
-  const userData = await Post.populate(updatedPost, { path: 'writer' });
-  return {
-    Post: updatedPost,
-    User: userData,
-  };
+  return await Post.populate(updatedPost, { path: 'writer' });
 };
 
 const deletePostLogic = async (post_id) => {

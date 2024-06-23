@@ -5,8 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const jwtMiddleware = (req, res, next) => {
-  console.log(req.headers);
-  const token = req.headers['authorization'] || req.query.token; //토큰 읽기
+  const token = req.headers['authorization'].split(' ')[1] || req.query.token; //토큰 읽기
   // token does not exist
   if (!token) {
     console.log(1);
