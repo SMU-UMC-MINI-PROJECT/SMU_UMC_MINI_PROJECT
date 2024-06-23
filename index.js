@@ -35,7 +35,7 @@ dotenv.config(); // .env 파일 사용 (환경 변수 관리)
 app.use(
   '/api-docs',
   swaggerUi.serve,
-  swaggerUi.setup(specs, { explorer: false })
+  swaggerUi.setup(specs)
 );
 
 // routes
