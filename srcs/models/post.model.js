@@ -1,7 +1,16 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-const PostSchema = mongoose.Schema(
+const {
+  Types: { ObjectId },
+} = Schema;
+
+const PostSchema = new Schema(
   {
+    writer: {
+      type: ObjectId,
+      required: true,
+      ref: 'Student',
+    },
     title: {
       type: String,
       required: [true, '제목을 작성해주세요'],
@@ -11,10 +20,8 @@ const PostSchema = mongoose.Schema(
       required: [true, '내용을 작성해주세요'],
     },
     announce: {
-      type: String,
-      enum: ['false', 'true'],
-      default: 'false',
-      required: false,
+      type: Boolean,
+      default: false,
     },
   },
   {
@@ -28,7 +35,7 @@ PostSchema.set('toJSON', { virtuals: true });
 PostSchema.virtual('comments', {
   ref: 'Comment',
   localField: '_id',
-  foreignField: 'post',
+  foreignField: 'post_id',
 });
 
 export default mongoose.model('Post', PostSchema);

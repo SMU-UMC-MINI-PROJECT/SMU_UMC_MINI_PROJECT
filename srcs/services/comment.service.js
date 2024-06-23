@@ -1,5 +1,6 @@
 import Comment from '../models/comment.model.js';
-
+import { jwtMiddleware } from '../../config/jwt.js';
+import { Student } from '../models/signupModel.js';
 const getCommentsLogic = async (post_id) => {
   try {
     const comments = await Comment.find({
@@ -12,14 +13,20 @@ const getCommentsLogic = async (post_id) => {
         path: 'comments',
         match: { isDeleted: false },
         options: { sort: { createdAt: -1 } },
-      });
+      })
+      .populate({ path: 'writer' });
     return comments;
   } catch (err) {
     throw new Error('댓글을 불러오는 중 오류가 발생했습니다.');
   }
 };
 
-const createCommentLogic = async (post_id, text, parentComment = null) => {
+const createCommentLogic = async (
+  post_id,
+  user_id,
+  text,
+  parentComment = null
+) => {
   try {
     let depth = 1;
     if (parentComment) {
@@ -30,7 +37,13 @@ const createCommentLogic = async (post_id, text, parentComment = null) => {
       depth = parent.depth + 1;
     }
 
+    const userData = await Student.findOne({ studentId: user_id });
+    if (!userData) {
+      throw new Error('유효하지 않은 사용자입니다.');
+    }
+
     const newComment = new Comment({
+      writer: userData,
       post: post_id,
       text,
       parentComment,
@@ -46,11 +59,15 @@ const createCommentLogic = async (post_id, text, parentComment = null) => {
 
 const updateCommentLogic = async (post_id, comment_Id, newText) => {
   try {
-    const comment = await Comment.findOne({ _id: comment_Id, post: post_id });
+    const comment = await Comment.findOne({
+      _id: comment_Id,
+      post: post_id,
+    }).populate('writer');
+
     if (!comment) {
       throw new Error('댓글을 찾을 수 없습니다.');
     }
-    // 댓글 내용 업데이트
+
     comment.text = newText;
     await comment.save();
     return comment;
@@ -61,7 +78,10 @@ const updateCommentLogic = async (post_id, comment_Id, newText) => {
 
 const deleteCommentLogic = async (post_id, comment_id) => {
   try {
-    const comment = await Comment.findOne({ _id: comment_id, post: post_id });
+    const comment = await Comment.findOne({
+      _id: comment_id,
+      post: post_id,
+    }).populate('writer');
     if (!comment) {
       throw new Error('댓글을 찾을 수 없습니다.');
     }

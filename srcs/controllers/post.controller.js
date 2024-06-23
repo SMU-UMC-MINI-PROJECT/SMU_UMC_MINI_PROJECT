@@ -1,6 +1,6 @@
 import { successStatus } from '../../config/successStatus.js';
 import { errStatus } from '../../config/errorStatus.js';
-
+import { response, errResponse } from '../../config/response.js';
 import {
   getPostsLogic,
   getPostLogic,
@@ -11,49 +11,52 @@ import {
 
 const getPosts = async (req, res, next) => {
   try {
-    const posts = await getPostsLogic();
-    res.status(200).json(posts);
+    const { page, offset } = req.query;
+    const posts = await getPostsLogic(page, offset);
+    res.send(response(successStatus.GET_ALL_POSTS_SUCCESS, posts));
   } catch (err) {
-    res.status(500).json({ message: errStatus.INTERNAL_SERVER_ERROR });
+    res.send(errResponse(errStatus.POST_NOT_FOUND));
   }
 };
 
 const getPost = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const post = await getPostLogic(id);
-    res.status(200).json(post);
+    const { post_id } = req.params;
+    const post = await getPostLogic(post_id);
+    res.send(response(successStatus.GET_ONE_POST_SUCCESS, post));
   } catch (err) {
-    res.status(500).json({ message: errStatus.INTERNAL_SERVER_ERROR });
+    res.send(errResponse(errStatus.POST_NOT_FOUND));
   }
 };
 
 const createPost = async (req, res) => {
   try {
-    const post = await createPostLogic(req.body);
-    res.status(201).json(post);
+    const { user_id } = req.verifiedToken;
+
+    const post = await createPostLogic(req.body, user_id);
+    res.send(response(successStatus.MAKE_POST_SUCCESS, post));
   } catch (err) {
-    res.status(500).json({ message: errStatus.INTERNAL_SERVER_ERROR });
+    res.send(errResponse(errStatus.POST_CREATION_FAILED));
   }
 };
 
 const updatePost = async (req, res) => {
   try {
-    const { id } = req.params;
-    const updatedPost = await updatePostLogic(id, req.body);
-    res.status(200).json(updatedPost);
+    const { post_id } = req.params;
+    const updatedPost = await updatePostLogic(req.body, post_id);
+    res.send(response(successStatus.UPDATE_POST_SUCCESS, updatedPost));
   } catch (err) {
-    res.status(500).json({ message: errStatus.INTERNAL_SERVER_ERROR });
+    res.send(errResponse(errStatus.POST_UPDATE_FAILED));
   }
 };
 
 const deletePost = async (req, res) => {
   try {
-    const { id } = req.params;
-    await deletePostLogic(id);
-    res.status(200).json({ message: successStatus.ISSUCCESS });
+    const { post_id } = req.params;
+    await deletePostLogic(post_id);
+    res.send(response(successStatus.DELETE_POST_SUCCESS));
   } catch (err) {
-    res.status(500).json({ message: errStatus.INTERNAL_SERVER_ERROR });
+    res.send(errResponse(errStatus.POST_DELETE_FAILED));
   }
 };
 

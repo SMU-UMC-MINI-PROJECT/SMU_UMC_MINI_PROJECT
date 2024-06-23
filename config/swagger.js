@@ -1,6 +1,6 @@
 //swagger.js
 import swaggerJSDoc from 'swagger-jsdoc';
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 dotenv.config();
 
 const options = {
@@ -22,8 +22,8 @@ const options = {
       },
     },
   },
-  apis: ['./config/swagger.js', './srcs/routes/*.js', './config/swagger/*'], 
+  apis: ['./config/swagger.js', './srcs/routes/*.js', './config/swagger/*'],
 };
 const specs = swaggerJSDoc(options);
 
-export { specs }; 
+export { specs };

@@ -60,5 +60,61 @@ export const errStatus = {
     message: '입력하신 정보가 없습니다. 회원가입을 먼저 진행해주세요.',
   },
   //토큰 오류
-  TOKEN_VERIFICATION_FAILURE : { "isSuccess": false, "code": "TOKEN401", "message":"JWT 토큰 검증 실패" },
+  TOKEN_VERIFICATION_FAILURE: {
+    isSuccess: false,
+    code: 'TOKEN401',
+    message: 'JWT 토큰 검증 실패',
+  },
+  // 게시글 오류
+  POST_NOT_FOUND: {
+    status: StatusCodes.NOT_FOUND,
+    isSuccess: false,
+    code: 'POST404',
+    message:
+      '요청하신 게시글을 찾을 수 없습니다. 게시글이 삭제되었거나 존재하지 않을 수 있습니다.',
+  },
+  POST_CREATION_FAILED: {
+    status: StatusCodes.INTERNAL_SERVER_ERROR,
+    isSuccess: false,
+    code: 'POST500',
+    message: '게시글 작성 중 오류가 발생했습니다.',
+  },
+  POST_UPDATE_FAILED: {
+    status: StatusCodes.INTERNAL_SERVER_ERROR,
+    isSuccess: false,
+    code: 'POST500',
+    message: '게시글 수정 중 오류가 발생했습니다.',
+  },
+  POST_DELETE_FAILED: {
+    status: StatusCodes.INTERNAL_SERVER_ERROR,
+    isSuccess: false,
+    code: 'POST500',
+    message: '게시글 삭제 중 오류가 발생했습니다.',
+  },
+  // 댓글 오류
+  COMMENT_NOT_FOUND: {
+    status: StatusCodes.NOT_FOUND,
+    isSuccess: false,
+    code: 'COMMENT404',
+    message:
+      '요청하신 댓글을 찾을 수 없습니다. 댓글이 삭제되었거나 존재하지 않을 수 있습니다.',
+  },
+  COMMENT_CREATION_FAILED: {
+    status: StatusCodes.INTERNAL_SERVER_ERROR,
+    isSuccess: false,
+    code: 'COMMENT500',
+    message: '댓글 작성 중 오류가 발생했습니다.',
+  },
+  COMMENT_UPDATE_FAILED: {
+    status: StatusCodes.INTERNAL_SERVER_ERROR,
+    isSuccess: false,
+    code: 'COMMENT500',
+    message: '댓글 수정 중 오류가 발생했습니다.',
+  },
+  COMMENT_DELETE_FAILED: {
+    status: StatusCodes.INTERNAL_SERVER_ERROR,
+    isSuccess: false,
+    code: 'COMMENT500',
+    message: '댓글 삭제 중 오류가 발생했습니다.',
+  },
 };
