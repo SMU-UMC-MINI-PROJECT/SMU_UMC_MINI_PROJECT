@@ -1,63 +1,87 @@
+// signupService.js
+
+import bcrypt from 'bcryptjs'; 
 import puppeteer from 'puppeteer';
 import { errStatus } from '../../config/errorStatus.js';
 import { successStatus } from '../../config/successStatus.js';
 import { Student } from '../models/signupModel.js';
 
+const SALT_ROUNDS = 10; 
+
 export const signupService = async (studentId, password) => {
-  const existingStudent = await Student.findOne({ studentId });
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    
+    try {
+        await page.goto('https://ecampus.smu.ac.kr/login.php');
 
-  if (existingStudent) {
-    // 이미 가입한 경우
-    throw { data: errStatus.ALREADY_REGISTERED };
-  }
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
+        // 학번과 비밀번호 입력
+        await page.type('#input-username', studentId);
+        await page.type('#input-password', password);
 
-  // e-campus 크롤링
-  try {
-    await page.goto('https://ecampus.smu.ac.kr/login.php');
+        // 폼 제출
+        await Promise.all([
+            page.click('input[name="loginbutton"]'),
+            page.waitForNavigation()
+        ]);
 
-    await page.type('#input-username', studentId);
-    await page.type('#input-password', password);
-    await page.click('input[name="loginbutton"]');
+        const currentUrl = page.url();
+        console.log(currentUrl);
 
-    await page.waitForNavigation();
+        if (currentUrl === 'https://ecampus.smu.ac.kr/') {
+            // 사용자 정보 섹션 로드 완료 대기
+            await page.waitForSelector('.user-info-picture');
 
-    const currentUrl = page.url();
+            // 이름과 전공 추출
+            const userInfo = await page.evaluate(() => {
+                const nameElement = document.querySelector('.user-info-picture h4');
+                const majorElement = document.querySelector('.user-info-picture .department');
+                
+                return {
+                    name: nameElement ? nameElement.textContent.trim() : '이름 없음',
+                    major: majorElement ? majorElement.textContent.trim() : '전공 없음'
+                };
+            });
 
-    await browser.close();
+            console.log('추출된 사용자 정보:', userInfo);
 
-    if (currentUrl === 'https://ecampus.smu.ac.kr/') {
-      // 본인인증 성공하면 이름 학번 크롤링해서 가져오기
-      const userInfo = await page.evaluate(() => {
-        let name = document.querySelector('.user-info-picture h4').innerText;
-        let major = document.querySelector(
-          '.user-info-picture p.department'
-        ).innerText;
-        return { name, major };
-      });
+            // MongoDB에 학번이 이미 존재하는지 확인
+            const existingStudent = await Student.findOne({ studentId });
 
-      // MongoDB에 학번, 비밀번호, 이름, 전공 저장
-      const newStudent = new Student({
-        studentId,
-        password,
-        name: userInfo.name,
-        major: userInfo.major,
-      });
+            if (existingStudent) {
+                // 이미 가입된 학번인 경우 처리
+                console.log(`학번 ${studentId}은(는) 이미 등록되어 있습니다.`);
+                await browser.close();
+                return errStatus.ALREADY_REGISTERED; // 적절한 오류 상태 반환
+            }
 
-      await newStudent.save();
+            // MongoDB에 저장하기 전에 비밀번호를 해싱
+            const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
-      return successStatus.JOIN_SUCCESS;
-    } else if (
-      currentUrl === 'https://ecampus.smu.ac.kr/login.php?errorcode=3'
-    ) {
-      // 학생 정보 없을 경우
-      throw { data: errStatus.AUTHENTICATION_FAILED };
-    } else {
-      throw { data: errStatus.INTERNAL_SERVER_ERROR };
+            // MongoDB에 저장할 새 학생 데이터 생성
+            const newStudent = new Student({
+                studentId,
+                password: hashedPassword, // 해싱된 비밀번호 저장
+                name: userInfo.name,
+                major: userInfo.major,
+            });
+
+            // MongoDB에 학생 데이터 저장
+            await newStudent.save();
+
+            await browser.close();
+
+            return successStatus.SUCCESS;
+        } else if (currentUrl === 'https://ecampus.smu.ac.kr/login.php?errorcode=3') {
+            console.log("인증 실패");
+            return errStatus.AUTHENTICATION_FAILED;
+        } else {
+            console.log("내부 서버 오류");
+            return errStatus.INTERNAL_SERVER_ERROR;
+        }
+
+    } catch (error) {
+        await browser.close();
+        throw error;
     }
-  } catch (error) {
-    await browser.close();
-    throw error;
-  }
 };
