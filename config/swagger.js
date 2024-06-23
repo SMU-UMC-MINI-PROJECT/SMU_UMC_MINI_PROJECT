@@ -10,6 +10,8 @@ const options = {
       version: '1.0.0',
       description: 'UMC_MINI_PROJECT_API, API 설명',
     },
+    host: process.env.SERVER_IP,
+    basePath: '/',
     schemes: ['http'],
     securityDefinitions: {
       bearerAuth: {
