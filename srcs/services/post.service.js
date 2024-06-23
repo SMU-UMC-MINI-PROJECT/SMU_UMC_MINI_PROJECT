@@ -1,7 +1,11 @@
 import Post from '../models/post.model.js';
 import { Student } from '../models/signupModel.js';
-const getPostsLogic = async () => {
-  return await Post.find({}).populate('writer');
+const getPostsLogic = async (page, offset) => {
+  return await Post.find({})
+    .populate('writer')
+    .sort({ createdAt: -1 })
+    .skip(page * offset)
+    .limit(offset);
 };
 
 const getPostLogic = async (post_id) => {

@@ -12,8 +12,8 @@ export const postRouter = express.Router();
 
 postRouter
   .route('/')
-  .get(jwtMiddleware, getPosts)
-  .post(jwtMiddleware, createPost);
+  .post(jwtMiddleware, createPost)
+  .get(jwtMiddleware, getPosts);
 
 postRouter
   .route('/:post_id')
