@@ -19,10 +19,11 @@ const SocketUserSchema = mongoose.Schema(
     },
     socketIsAdmin:{
         type: Boolean,
-        required: false,
+        default: false,
     },
     token: {
         type: String,
+        required: true,
     },
   },
   {

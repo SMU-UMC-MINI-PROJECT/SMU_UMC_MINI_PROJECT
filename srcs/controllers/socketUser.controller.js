@@ -10,15 +10,25 @@ socketUserController.saveUser = async (userName, phoneNumber, sid) => {
             socketUserName: userName,
             socketUserPhone: phoneNumber,
             token: sid,
-            socketIsAdmin: true,
+            socketIsAdmin: false,
         });
     }
 
     await SocketUser.create(user);
     return user;
 };
+socketUserController.isUser = async(userName)=>{
+    let user = await SocketUser.findOne({ socketUserName: userName });
+    if(user){
+        return user
+    }
+    else{
+        return false;
+    }
+}
 socketUserController.checkUser=async(sid)=>{
-    const user = await SocketUser.findOne({token:sid})
+    console.log(sid)
+    const user = await SocketUser.findOne({token:sid});
     console.log('1111111', user);
     if(!user) throw new Error('User not found');
     return user;
