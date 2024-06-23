@@ -10,8 +10,7 @@ const options = {
       version: '1.0.0',
       description: 'UMC_MINI_PROJECT_API, API 설명',
     },
-    // host: 'localhost:3000',
-    host: process.env.SERVER_IP,
+    host: `${process.env.SERVER_IP}`,
     basePath: '/',
     schemes: ['http'],
     securityDefinitions: {
