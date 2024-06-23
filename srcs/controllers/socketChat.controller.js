@@ -1,4 +1,4 @@
-import SocketChat from '../Models/socketChat.js'
+import SocketChat from '../models/socketChat.js'
 const socketChatController = {}
 socketChatController.saveChat = async(message, user)=>{
     const newMessage = new SocketChat({

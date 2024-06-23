@@ -648,4 +648,5 @@ paths:
         '500':
           description: 서버 오류
       security:
-        - bearerAuth: []
+
+        - bearerAuth: [] 

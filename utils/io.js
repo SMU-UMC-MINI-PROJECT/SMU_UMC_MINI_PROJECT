@@ -26,7 +26,6 @@ const setupSocketIO = (io) => {
                         user: { id: null, name: "system" },
                     };
                     io.to(phoneNum).emit("message", welcomeMessage);
-                    console.log('1111',welcomeMessage);
                     cb({ ok: true, data: user });
                 } else {
                     // 관리자는 모든 방에 접속 가능 하도록
