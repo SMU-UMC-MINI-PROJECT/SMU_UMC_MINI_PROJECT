@@ -1,3 +1,4 @@
+openapi: 3.0.0
 info:
   version: 1.0.0
   title: SMU_UMC_MINI_PROJECT - Swagger
@@ -5,6 +6,11 @@ info:
 securityDefinitions:
   basicAuth:
     type: basic
+servers:
+  - url: http://3.35.27.96:3000
+    description: Express server
+  - url: ws://3.35.27.96:5001
+    description: Socket.IO server
 paths:
   /api/signup:
     post:
@@ -650,4 +656,68 @@ paths:
       security:
 
         - bearerAuth: [] 
-  
+  /socket:
+    get:
+      summary: Connect to the Socket.IO server
+      description: >
+        Connect to this endpoint using a Socket.IO client.
+        This is not an HTTP endpoint.
+      responses:
+        '101':
+          description: Switching Protocols
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        phoneNum:
+          type: string
+      required:
+        - name
+        - phoneNum
+    LoginResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            phoneNum:
+              type: string
+            socketIsAdmin:
+              type: boolean
+        error:
+          type: string
+    SendMessageRequest:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    SendMessageResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        error:
+          type: string
+    ChatMessage:
+      type: object
+      properties:
+        chat:
+          type: string
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string

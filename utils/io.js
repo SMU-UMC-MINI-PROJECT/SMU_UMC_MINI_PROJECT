@@ -1,9 +1,89 @@
 import socketChatController from '../srcs/controllers/socketChat.controller.js';
 import socketUserController from '../srcs/controllers/socketUser.controller.js';
 
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     LoginRequest:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *         phoneNum:
+ *           type: string
+ *       required:
+ *         - name
+ *         - phoneNum
+ *     LoginResponse:
+ *       type: object
+ *       properties:
+ *         ok:
+ *           type: boolean
+ *         data:
+ *           type: object
+ *           properties:
+ *             id:
+ *               type: string
+ *             name:
+ *               type: string
+ *             phoneNum:
+ *               type: string
+ *             socketIsAdmin:
+ *               type: boolean
+ *         error:
+ *           type: string
+ *     SendMessageRequest:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *       required:
+ *         - message
+ *     SendMessageResponse:
+ *       type: object
+ *       properties:
+ *         ok:
+ *           type: boolean
+ *         error:
+ *           type: string
+ */
+
 const setupSocketIO = (io) => {
     io.on("connection", async (socket) => {
         console.log("Client connected:", socket.id);
+
+        /**
+         * @openapi
+         * /socket:
+         *   get:
+         *     summary: Connect to the Socket.IO server
+         *     description: Connect to this endpoint using a Socket.IO client.
+         *     responses:
+         *       '101':
+         *         description: Switching Protocols
+         */
+
+        /**
+         * @openapi
+         * components:
+         *   examples:
+         *     LoginRequest:
+         *       summary: Login request example
+         *       value:
+         *         name: 'John Doe'
+         *         phoneNum: '1234567890'
+         *     LoginResponse:
+         *       summary: Login response example
+         *       value:
+         *         ok: true
+         *         data:
+         *           id: '1'
+         *           name: 'John Doe'
+         *           phoneNum: '1234567890'
+         *           socketIsAdmin: false
+         *         error: ''
+         */
 
         // 로그인 이벤트 처리
         socket.on("login", async (data, cb) => {
