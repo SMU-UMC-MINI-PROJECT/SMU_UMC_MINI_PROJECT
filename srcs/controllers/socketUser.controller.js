@@ -10,7 +10,7 @@ socketUserController.saveUser = async (userName, phoneNumber, sid) => {
             name: userName,
             socketUserPhone: phoneNumber,
             token: sid,
-            socketIsAdmin: true,
+            socketIsAdmin: false,
         });
     }
 
