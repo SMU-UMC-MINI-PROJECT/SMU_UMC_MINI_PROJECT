@@ -23,6 +23,11 @@ export const signupService = async (studentId, password) => {
       launchOptions = {
         executablePath: '/usr/bin/google-chrome',
         headless: true,
+        protocolTimeout : 60000,
+        args: [
+          '--no-sandbox', // 보안 기능 비활성화 (필요한 경우)
+          '--disable-setuid-sandbox'
+        ]
       };
     } else {
       launchOptions = {
